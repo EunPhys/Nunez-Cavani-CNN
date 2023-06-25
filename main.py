@@ -9,8 +9,8 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
 
 # Training and test data 
-train_dir = '/Users/eunanpro/Desktop/Untitled Folder/Data/nunez-cavani/train'
-test_dir = '/Users/eunanpro/Desktop/Untitled Folder/Data/nunez-cavani/test'
+train_dir = '/Users/eunanpro/Desktop/CNN/Data/nunez-cavani/train'
+test_dir = '/Users/eunanpro/Desktop/CNN/Data/nunez-cavani/test'
 
 # Initialize lists to store the training and testing data
 train_data = []
