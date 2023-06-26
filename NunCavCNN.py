@@ -1,7 +1,6 @@
 import os
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 from tensorflow import keras
 from keras.preprocessing.image import ImageDataGenerator
 from keras import layers, models
