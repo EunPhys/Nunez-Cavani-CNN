@@ -71,7 +71,7 @@ Epoch 9/10
 Epoch 10/10
 47/47 [==============================] - 66s 1s/step - loss: 0.3381 - accuracy: 0.8486 - val_loss: 0.5162 - val_accuracy: 0.7574
 
-TRAINING AND TEST SUMMARY
+TRAINING AND TEST SUMMARY:
 
 Training Loss: 0.2644
 Training Accuracy: 0.8865
@@ -79,7 +79,7 @@ Training Accuracy: 0.8865
 Test Loss: 0.6664938926696777
 Test Accuracy: 0.7250000238418579
 
-ADDITIONAL TEST METRICS
+ADDITIONAL TEST METRICS:
 
 Accuracy: 0.725
 Precision: 0.6956521739130435
