@@ -23,84 +23,63 @@ target_size = (150, 150)
 # Data augmentation using ImageDataGenerator
 datagen = ImageDataGenerator(width_shift_range=0.2)
 
-# Preprocessing steps including Haar cascade based head zoom ('haarcascade_frontalface_default.xml')
-for class_name in os.listdir(train_dir):
-    class_dir = os.path.join(train_dir, class_name)
-    if not os.path.isdir(class_dir):
-        continue  # Skip non-directory files
-    class_label = 1 if class_name == 'nunez' else 0  # Assign label based on class name
+# Function that prepares images including Haar cascade based head zoom ('haarcascade_frontalface_default.xml')
+def ImageProcessing(dir, type):
+    
+    for class_name in os.listdir(dir):
+        class_dir = os.path.join(dir, class_name)
 
-    for file in os.listdir(class_dir):
-        img_path = os.path.join(class_dir, file)
-        img = cv2.imread(img_path)
+        if not os.path.isdir(class_dir):
+            continue # Skip non directory files
 
-        # Skip the image if it cannot be read or has an empty size
-        if img is None or img.size == 0:
-            print(f"Skipped image: {img_path}")
-            continue
+        class_label = 1 if class_name == 'nunez' else 0 # Assign label based on class name
 
-        # Perform face detection and crop around the head region
-        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+        for file in os.listdir(class_dir):
+            img_path = os.path.join(class_dir, file)
+            img = cv2.imread(img_path)
 
-        if len(faces) > 0:
-            (x, y, w, h) = faces[0]  # Crop around the first detected face
-            img = img[y:y + h, x:x + w]
+            # Skip the image if it cannot be read or has an empty size
+            if img is None or img.size == 0:
+                print(f"Skipped image: {img_path}")
+                continue
+                
+            # Perform face detection and crop around the head region
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
-        img = cv2.resize(img, target_size)
-        img = img / 255.0  # Normalize the image pixels to the range [0, 1]
+            if len(faces) > 0:
+                (x, y, w, h) = faces[0]  # Crop around the first detected face
+                img = img[y:y + h, x:x + w]
 
-        # Perform additional preprocessing or data augmentation using ImageDataGenerator
-        img = np.squeeze(img)  # Remove single-dimensional entries from the shape of the array
-        img = img.astype(np.float32)  # Convert image data type to np.float32
+            img = cv2.resize(img, target_size)
+            img = img / 255.0  # Normalize the image pixels to the range [0, 1]
 
-        # Apply random data augmentation with randomly selected transformation parameters
-        if np.random.rand() < 0.5:
-            augmented_images = datagen.flow(np.expand_dims(img, axis=0), batch_size=1)
-            for augmented_image in augmented_images:
-                augmented_image = augmented_image[0]
-                train_data.append(augmented_image)
-                train_labels.append(class_label)
-                break  # Break the loop to generate only one augmented image
-        else:
-            train_data.append(img)
-            train_labels.append(class_label)
+            img = np.squeeze(img)  # Remove single-dimensional entries from the shape of the array
+            img = img.astype(np.float32)  # Convert image data type to np.float32
 
-# Preprocess the TEST images
-for class_name in os.listdir(test_dir):
-    class_dir = os.path.join(test_dir, class_name)
-    if not os.path.isdir(class_dir):
-        continue
+            # If statement that proccess data based on if it is training or test
+            if type != 1:
+                test_data.append(img)
+                test_labels.append(class_label)
+            else:    
+                # Apply random data augmentation with randomly selected transformation parameters
+                if np.random.rand() < 0.5:
+                    augmented_images = datagen.flow(np.expand_dims(img, axis=0), batch_size=1)
+                
+                    for augmented_image in augmented_images:
+                        augmented_image = augmented_image[0]
+                        train_data.append(augmented_image)
+                        train_labels.append(class_label)
+                        break  # Break the loop to generate only one augmented image
+                else:
+                    train_data.append(img)
+                    train_labels.append(class_label)
 
-    class_label = 1 if class_name == 'nunez' else 0  # Assign label based on class name
 
-    for file in os.listdir(class_dir):
-        img_path = os.path.join(class_dir, file)
-        img = cv2.imread(img_path)
-
-        # Skip the image if it cannot be read or has an empty size
-        if img is None or img.size == 0:
-            print(f"Skipped image: {img_path}")
-            continue
-
-        # Perform face detection and crop around the head region
-        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-
-        if len(faces) > 0:
-            (x, y, w, h) = faces[0]  # Crop around the first detected face
-            img = img[y:y + h, x:x + w]
-
-        img = cv2.resize(img, target_size)
-        img = img / 255.0  # Normalize the image pixels to the range [0, 1]
-
-        img = np.squeeze(img)  # Remove single-dimensional entries from the shape of the array
-        img = img.astype(np.float32)  # Convert image data type to np.float32
-
-        test_data.append(img)
-        test_labels.append(class_label)
+# Calling the image processing function for the training and test data
+ImageProcessing(train_dir,1)
+ImageProcessing(test_dir,0)
 
 # Convert the data and labels to NumPy arrays
 train_data = np.array(train_data)
