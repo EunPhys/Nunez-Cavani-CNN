@@ -1,6 +1,36 @@
 # Nunez-Cavani-CNN
 Convolutional neural network image classifier. Optimised to decipher between two of footballs biggest GOATS, Darwin Nunez and Edinson Cavani.
 
+
+ %%%%% PERFORMANCE METRICS %%%%%%
+ 
+
+
+TRAINING AND TEST SUMMARY:
+
+Training Loss: 0.2644
+Training Accuracy: 0.8865
+
+Test Loss: 0.6664938926696777
+Test Accuracy: 0.7250000238418579
+
+ADDITIONAL TEST METRICS:
+
+Accuracy: 0.725
+Precision: 0.6956521739130435
+Recall: 0.8
+F1 Score: 0.7441860465116279
+
+ %%%%% PERFORMANCE METRICS %%%%%%
+
+%
+%
+%
+
+ %%%%% ADDITIONAL DETAILS %%%%%%
+
+
+
 DATA FORMAT:
 
 Train Data Shape: (1851, 150, 150, 3)
@@ -48,6 +78,7 @@ Trainable params: 14,397,057
 Non-trainable params: 0
 _________________________________________________________________
 
+
 TRAINING EPOCHS:
 
 Epoch 1/10
@@ -70,18 +101,3 @@ Epoch 9/10
 47/47 [==============================] - 66s 1s/step - loss: 0.3392 - accuracy: 0.8480 - val_loss: 0.1937 - val_accuracy: 0.9191
 Epoch 10/10
 47/47 [==============================] - 66s 1s/step - loss: 0.3381 - accuracy: 0.8486 - val_loss: 0.5162 - val_accuracy: 0.7574
-
-TRAINING AND TEST SUMMARY:
-
-Training Loss: 0.2644
-Training Accuracy: 0.8865
-
-Test Loss: 0.6664938926696777
-Test Accuracy: 0.7250000238418579
-
-ADDITIONAL TEST METRICS:
-
-Accuracy: 0.725
-Precision: 0.6956521739130435
-Recall: 0.8
-F1 Score: 0.7441860465116279
